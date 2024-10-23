@@ -6,3 +6,7 @@ type Comment struct{
 	PostID int `json:"postid"`
 	Content string `json:"content"`
 }
+
+type Comments struct{
+	Comments []Comment `json:"comments"`
+}

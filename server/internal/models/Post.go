@@ -7,3 +7,7 @@ type Post struct{
 	Category string `json:"category"`
 	Username string `json:"username"`
 }
+
+type Posts struct{
+	Posts []Post `json:"posts"`
+}

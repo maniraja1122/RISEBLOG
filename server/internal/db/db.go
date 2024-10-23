@@ -7,7 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 );
 
-var db *sql.DB
+var DB *sql.DB
 
 type DBConfig struct {
     User     string
@@ -28,11 +28,11 @@ func LoadDBConfig() *DBConfig {
 func Connect() error {
 	var err error
 	config:=LoadDBConfig()
-	db, err = sql.Open("mysql", fmt.Sprintf("%s:%s@(%s:%s)/%s", config.User, config.Password,config.Host,config.Port,config.Name))
+	DB, err = sql.Open("mysql", fmt.Sprintf("%s:%s@(%s:%s)/%s", config.User, config.Password,config.Host,config.Port,config.Name))
 	if err != nil {
 		return err
 	}
-	if err = db.Ping(); err != nil {
+	if err = DB.Ping(); err != nil {
 		return err
 	}
 	err=CreateTables()
@@ -44,7 +44,7 @@ func Connect() error {
 
 // Model Tables SQL Mapping Functions
 func CreateUserTable() error{
-	_,error:=db.Exec(`
+	_,error:=DB.Exec(`
 	CREATE TABLE IF NOT EXISTS users (
 	username VARCHAR(255) NOT NULL PRIMARY KEY UNIQUE,
 	password TEXT NOT NULL
@@ -53,7 +53,7 @@ func CreateUserTable() error{
 }
 
 func CreatePostTable() error {
-	_,error:=db.Exec(`
+	_,error:=DB.Exec(`
 	CREATE TABLE IF NOT EXISTS posts (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	title TEXT NOT NULL,
@@ -65,7 +65,7 @@ func CreatePostTable() error {
 }
 
 func CreateCommentTable() error{
-	_,error:=db.Exec(`
+	_,error:=DB.Exec(`
 	CREATE TABLE IF NOT EXISTS comments (
 	id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	username VARCHAR(255) NOT NULL,
@@ -76,7 +76,7 @@ func CreateCommentTable() error{
 }
 
 func CreateLikeTable() error{
-	_,error:=db.Exec(`
+	_,error:=DB.Exec(`
 	CREATE TABLE IF NOT EXISTS likes (
 	username VARCHAR(255) NOT NULL,
 	postid BIGINT NOT NULL,
@@ -105,5 +105,3 @@ func CreateTables() error{
 	}
 	return nil
 }
-
-// Queries
